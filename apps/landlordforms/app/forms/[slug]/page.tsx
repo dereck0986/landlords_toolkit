@@ -51,6 +51,23 @@ export default async function FormDetailPage({ params }: FormPageProps) {
           <p className="mt-3 leading-7 text-ink/75">{form.useCase}</p>
         </section>
 
+        <section className="mt-8 grid gap-5 md:grid-cols-2">
+          <div className="rounded-lg border border-line bg-white p-5">
+            <h2 className="text-xl font-semibold text-ink">Preview</h2>
+            <p className="mt-3 leading-7 text-ink/75">
+              This template includes a professional title block, labeled fields, notes for landlord follow-up, and a low-risk disclaimer footer. It is designed to be downloaded, completed offline, and kept with your own records.
+            </p>
+          </div>
+          <div className="rounded-lg border border-line bg-white p-5">
+            <h2 className="text-xl font-semibold text-ink">Included formats</h2>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-ink/75">
+              {form.includedFormats.map((format) => (
+                <li key={format}>{format}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         <section className="mt-8">
           <h2 className="text-xl font-semibold text-ink">Download options</h2>
           <div className="mt-4 flex flex-wrap gap-3">

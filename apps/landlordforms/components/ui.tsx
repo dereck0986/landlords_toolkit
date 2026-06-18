@@ -94,7 +94,7 @@ export function Faq({ items }: { items: { question: string; answer: string }[] }
 export function PlaceholderNote() {
   return (
     <p className="mt-4 rounded-md border border-line bg-paper p-3 text-sm text-ink/70">
-      Template files are placeholders in V1 and should be replaced with final production documents before launch.
+      Downloads are generated from simple professional templates and include a general informational disclaimer. Review and adapt them for your local requirements before use.
     </p>
   );
 }

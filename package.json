@@ -8,7 +8,13 @@
   ],
   "scripts": {
     "dev": "npm --workspace apps/landlordforms run dev",
+    "generate:assets": "node scripts/generate-assets.js",
     "lint": "npm --workspace apps/landlordforms run lint",
     "build": "npm --workspace apps/landlordforms run build"
+  },
+  "devDependencies": {
+    "docx": "^9.7.1",
+    "exceljs": "^4.4.0",
+    "pdfkit": "^0.19.1"
   }
 }
