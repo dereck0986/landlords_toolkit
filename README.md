@@ -71,3 +71,14 @@ Initial build branch:
 ```txt
 asset-garden-v1
 ```
+
+## V1 Development
+
+```bash
+npm install
+npm run dev
+npm run lint
+npm run build
+```
+
+The first app lives in `apps/landlordforms`. Shared static content and calculator helpers live in `packages/content` and `packages/calculators`.
