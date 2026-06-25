@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#faf8f3"/>
+  <rect x="80" y="80" width="1040" height="470" rx="18" fill="#ffffff" stroke="#ded8cc" stroke-width="4"/>
+  <text x="120" y="230" fill="#152018" font-family="Arial, sans-serif" font-size="68" font-weight="700">Landlords Toolkit</text>
+  <text x="120" y="320" fill="#2f5d46" font-family="Arial, sans-serif" font-size="38">Free forms, spreadsheets, and calculators</text>
+  <text x="120" y="395" fill="#152018" font-family="Arial, sans-serif" font-size="30">No account required.</text>
+</svg>

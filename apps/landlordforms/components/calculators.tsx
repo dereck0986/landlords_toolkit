@@ -1,7 +1,8 @@
 "use client";
 
 import { calculateCapRate, calculateCashFlow, calculateRoi, toMoney } from "@landlords-toolkit/calculators";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { usePlausible } from "next-plausible";
 
 function NumberField({
   label,
@@ -36,6 +37,7 @@ function PrivacyNote() {
 }
 
 export function CashFlowCalculator() {
+  const trackCalculatorUsed = useCalculatorTracking("cash-flow-calculator");
   const [values, setValues] = useState({
     monthlyRent: 0,
     otherIncome: 0,
@@ -49,6 +51,7 @@ export function CashFlowCalculator() {
   const results = useMemo(() => calculateCashFlow(values), [values]);
 
   function update(key: keyof typeof values, value: number) {
+    trackCalculatorUsed();
     setValues((current) => ({ ...current, [key]: value }));
   }
 
@@ -85,6 +88,7 @@ export function CashFlowCalculator() {
 }
 
 export function CapRateCalculator() {
+  const trackCalculatorUsed = useCalculatorTracking("cap-rate-calculator");
   const [propertyValue, setPropertyValue] = useState(0);
   const [annualNoi, setAnnualNoi] = useState(0);
   const capRate = calculateCapRate(propertyValue, annualNoi);
@@ -92,8 +96,22 @@ export function CapRateCalculator() {
   return (
     <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
       <div className="grid gap-4 rounded-lg border border-line bg-white p-5">
-        <NumberField label="Property value / purchase price" value={propertyValue} onChange={setPropertyValue} />
-        <NumberField label="Annual net operating income" value={annualNoi} onChange={setAnnualNoi} />
+        <NumberField
+          label="Property value / purchase price"
+          value={propertyValue}
+          onChange={(value) => {
+            trackCalculatorUsed();
+            setPropertyValue(value);
+          }}
+        />
+        <NumberField
+          label="Annual net operating income"
+          value={annualNoi}
+          onChange={(value) => {
+            trackCalculatorUsed();
+            setAnnualNoi(value);
+          }}
+        />
       </div>
       <div className="space-y-4 rounded-lg border border-line bg-white p-5">
         <Result label="Cap rate" value={`${capRate.toFixed(2)}%`} />
@@ -104,6 +122,7 @@ export function CapRateCalculator() {
 }
 
 export function RoiCalculator() {
+  const trackCalculatorUsed = useCalculatorTracking("roi-calculator");
   const [cashInvested, setCashInvested] = useState(0);
   const [annualProfit, setAnnualProfit] = useState(0);
   const roi = calculateRoi(cashInvested, annualProfit);
@@ -111,8 +130,22 @@ export function RoiCalculator() {
   return (
     <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
       <div className="grid gap-4 rounded-lg border border-line bg-white p-5">
-        <NumberField label="Cash invested" value={cashInvested} onChange={setCashInvested} />
-        <NumberField label="Annual profit" value={annualProfit} onChange={setAnnualProfit} />
+        <NumberField
+          label="Cash invested"
+          value={cashInvested}
+          onChange={(value) => {
+            trackCalculatorUsed();
+            setCashInvested(value);
+          }}
+        />
+        <NumberField
+          label="Annual profit"
+          value={annualProfit}
+          onChange={(value) => {
+            trackCalculatorUsed();
+            setAnnualProfit(value);
+          }}
+        />
       </div>
       <div className="space-y-4 rounded-lg border border-line bg-white p-5">
         <Result label="Annual ROI" value={`${roi.toFixed(2)}%`} />
@@ -120,6 +153,25 @@ export function RoiCalculator() {
       </div>
     </div>
   );
+}
+
+function useCalculatorTracking(calculator: string) {
+  const plausible = usePlausible();
+  const hasTracked = useRef(false);
+
+  return () => {
+    if (hasTracked.current) {
+      return;
+    }
+
+    hasTracked.current = true;
+
+    try {
+      plausible("Calculator Used", { props: { calculator } });
+    } catch {
+      // Analytics should never interrupt browser-only calculators.
+    }
+  };
 }
 
 function Result({ label, value }: { label: string; value: string }) {

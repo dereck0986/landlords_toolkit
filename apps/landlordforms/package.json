@@ -11,6 +11,7 @@
     "@landlords-toolkit/calculators": "0.1.0",
     "@landlords-toolkit/content": "0.1.0",
     "next": "^15.3.4",
+    "next-plausible": "^4.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

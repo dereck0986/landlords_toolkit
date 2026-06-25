@@ -3,6 +3,7 @@ import Link from "next/link";
 import { forms, getFormBySlug } from "@landlords-toolkit/content";
 import { notFound } from "next/navigation";
 import { Faq, PageShell, PlaceholderNote } from "../../../components/ui";
+import { TrackedDownloadLink } from "../../../components/tracked-link";
 
 type FormPageProps = {
   params: Promise<{ slug: string }>;
@@ -72,13 +73,15 @@ export default async function FormDetailPage({ params }: FormPageProps) {
           <h2 className="text-xl font-semibold text-ink">Download options</h2>
           <div className="mt-4 flex flex-wrap gap-3">
             {form.downloads.map((download) => (
-              <Link
+              <TrackedDownloadLink
                 key={download.href}
                 href={download.href}
+                label={`${form.slug}:${download.label}`}
+                eventName={downloadEventName(download.label)}
                 className="rounded-md bg-moss px-4 py-2.5 text-sm font-semibold text-white hover:bg-ink"
               >
                 {form.ctaLabel} ({download.label})
-              </Link>
+              </TrackedDownloadLink>
             ))}
           </div>
           <PlaceholderNote />
@@ -104,4 +107,16 @@ export default async function FormDetailPage({ params }: FormPageProps) {
       </article>
     </PageShell>
   );
+}
+
+function downloadEventName(label: string): "Download PDF" | "Download DOCX" | "Download XLSX" {
+  if (label === "DOCX") {
+    return "Download DOCX";
+  }
+
+  if (label === "XLSX") {
+    return "Download XLSX";
+  }
+
+  return "Download PDF";
 }
